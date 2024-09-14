@@ -3,16 +3,19 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 Window {
-    width: 320
-    height: 640
+    id: window
+    width: 600
+    height: 900
     visible: true
 
     ColumnLayout {
+        anchors.fill:parent
         Label {
             text: "Basic application"
         }
         Button {
             text: "Button"
+            onClicked: core.send()
         }   
         Item {
             Layout.fillHeight: true

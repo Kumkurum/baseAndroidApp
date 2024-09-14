@@ -1,24 +1,25 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QTimer>
-#ifdef ANDROID
+#include <QQmlContext>
+#include "Activity/ActivityCore.h"
+#include "Service/ServiceCore.h"
 #include <QtCore/private/qandroidextras_p.h>
-#endif
 
 int startService(int argc, char *argv[]) {
-    qDebug() << "Service starting with from the same .so file";
     QAndroidService app(argc, argv);
+    ServiceCore serviceCore;
     return app.exec();
 }
+
 int startGui(int argc, char *argv[]){
     QGuiApplication app(argc, argv);
-#ifdef ANDROID
     QTimer::singleShot(800,nullptr,[=](){
         QNativeInterface::QAndroidApplication::hideSplashScreen(400);
         });
-#endif
-
+    ActivityCore activityCore;
     QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("core", &activityCore);
     const QUrl url("qrc:/main.qml");
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
@@ -31,12 +32,11 @@ int startGui(int argc, char *argv[]){
 
 int main(int argc, char *argv[]){
     if (argc <= 1) {
-        // code to handle main activity execution
         return startGui(argc, argv);
     } else if (argc > 1 && strcmp(argv[1], "-service") == 0) {
         return startService(argc, argv);
     } else {
-        qWarning() << "Unrecognized command line argument";
+        qWarning() <<"BaseAndroidApp"<< "Unrecognized command line argument";
         return -1;
     }
 }

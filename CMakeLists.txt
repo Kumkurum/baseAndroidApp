@@ -7,7 +7,9 @@ set(CMAKE_AUTORCC ON)
 find_package(Qt6 COMPONENTS Quick Core QuickControls2 REQUIRED)
 
 file(GLOB_RECURSE CPP_SOURCES
-        src/cpp/*
+        src/cpp/Activity/*
+        src/cpp/Service/*
+        main.cpp
 )
 set(PROJECT_SOURCES
         src/qml/qml.qrc
@@ -19,19 +21,20 @@ qt6_add_executable(${PROJECT_NAME}
         ${CPP_SOURCES}
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android/apk
-    QT_ANDROID_MIN_SDK_VERSION 26
-    QT_ANDROID_TARGET_SDK_VERSION 33
+        QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android/apk
+        QT_ANDROID_MIN_SDK_VERSION 26
+        QT_ANDROID_TARGET_SDK_VERSION 33
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    Qt6::Quick
-    Qt6::Core
+        Qt6::Quick
+        Qt6::Core
         Qt6::CorePrivate
-    Qt6::QuickControls2
+        Qt6::QuickControls2
+        Qt6::Network
 )
 
 install(TARGETS ${TARGET_NAME}
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        BUNDLE DESTINATION .
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
