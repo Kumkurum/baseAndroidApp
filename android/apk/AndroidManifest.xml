@@ -19,7 +19,8 @@
         android:requestLegacyExternalStorage="true"
         android:allowNativeHeapPointerTagging="false"
         android:allowBackup="true"
-        android:fullBackupOnly="false">
+        android:fullBackupOnly="false"
+        android:launchMode="singleInstance">
         <!-- name  - имя Java файла  MainActivity.java-->
         <activity
             android:name=".MainActivity"
@@ -39,15 +40,14 @@
             <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/splash"/>
             <meta-data android:name="android.app.splash_screen_sticky" android:value="true"/>
         </activity>
-        <!-- name  - имя Java файла  MainService.java имя класса тоже MainService-->
-        <service android:name=".MainService" android:exported="true">
-            <!-- Background running -->
+<!--         name  - имя Java файла  MainService.java имя класса тоже MainService-->
+        <service android:process=":basicAndroidApp_background" android:name=".MainService" android:foregroundServiceType="specialUse" android:exported="false">
             <meta-data android:name="android.app.background_running" android:value="true"/>
             <meta-data android:name="android.app.arguments" android:value="-service"/>
             <meta-data android:name="android.app.lib_name" android:value="-- %%INSERT_APP_LIB_NAME%% --"/>
         </service>
     </application>
-
 <!-- тут прописываются разрешения, можно глянуть на сайте андроида что делают и какие, но разрешения выдавать надо самому в коде-->
-<!--    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
 </manifest>
